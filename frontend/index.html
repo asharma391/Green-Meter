@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My First Chrome Extension!!</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Green Meter: Your Carbon Footprint Dashboard</h2>
+      <img src="visual.png" alt="Green meter"> 
+      <p>Since the last reset, your web browsing session has created </strong><span id="carbon_equivalent"></span> gCO2eq/kWH</strong>, which is equivalent to the yearly carbon sequestration of </strong><span id="beer_equivalent"></span> trees</strong>.</p>
+      <button id="reset_button">Reset Emissions</button>
+      <a href="./options.html" target="_blank">Click here to Improve your Carbon Footprint!</a>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

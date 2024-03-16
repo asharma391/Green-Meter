@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Green Meter",
+    "description": "Local carbon consumption tracker",
+    "version": "1.0",
+    "permissions": [
+      "storage",
+      "webRequest"
+    ],
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "background": {
+    "service_worker": "mapData.js",
+    "type": "module"
+  },
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": {
+        "16": "16.png",
+        "32": "32.png",
+        "64": "64.png",
+        "128": "128.png"}
+    },
+    "icons": {
+      "16": "16.png",
+      "32": "32.png",
+      "64": "64.png",
+      "128": "128.png"
+    }
+  }
