@@ -8,7 +8,7 @@ Addressing two key questions—how to raise individual awareness and educate on 
 
 ## How we built it
 
-We developed Green Meter as a Chrome extension using JavaScript, HTML, and CSS. We integrated the ElectricityMaps API for real-time carbon intensity data and used the standard 0.81 kWh/GB energy-to-data ratio to calculate the electricity usage for data transfer. The extension updates dynamically to reflect the user's browsing session.
+We developed Green Meter as a Chrome extension using JavaScript, HTML, and CSS. We integrated the ElectricityMaps API for real-time carbon intensity data based on the user's geographic country location and used the standard 0.81 kWh/GB energy-to-data ratio to calculate the electricity usage for data transfer. The extension updates dynamically to reflect the user's browsing session.
 
 ## Challenges we ran into
 
@@ -16,7 +16,7 @@ Accurately tracking and converting the data transfer into carbon emissions was h
 
 ## Accomplishments that we're proud of
 
-I'm proud of creating an intuitive, educational, well-functional tool that increases awareness & provides actionable insights into reducing one's digital carbon footprint. I’m also proud about the accuracy of the data given the unconventional and undocumented nature of accurately converting digital activity to a CO2 emission equivalent and also through our successful despite challenges integration of the ElectricityMaps API to ensure utmost data accuracy
+I'm proud of creating an intuitive, educational, well-functional tool that increases awareness & provides actionable insights into reducing one's digital carbon footprint. I’m also proud about the accuracy of the data given the unconventional and undocumented nature of accurately converting digital activity to a CO2 emission equivalent and also through our successful despite challenges integration of the ElectricityMaps API to ensure utmost data accuracy.
 
 ## What we learned
 
