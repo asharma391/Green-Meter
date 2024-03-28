@@ -1,3 +1,7 @@
+# GreenMeter
+
+Winner of the "Best of Air Challenge" category at the HackKurius hackathon. One of 6 winners at the hackathon out of 84 participants.
+
 ## Inspiration
 
 In the era of data-driven technology, the invisible environmental cost of online activities is escalating due to the significant energy consumption of data centers. Our digital activities, despite their common consideration as having a minimal environmental impact, actually contribute significantly to our carbon footprint. From the emissions needed to produce the electricity that powers data centers to the energy needed for data servers to transmit data across the globe, this is an important, yet widely unknown problem. Recognizing the gap in tools that measure digital carbon emissions comprehensively, our browser extension was created to illuminate the carbon footprint of users' entire web browsing sessions, not just individual websites. I created Green Meter to empower users to make more eco-conscious decisions and reduce this critical footprint.
