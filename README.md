@@ -1,7 +1,7 @@
 # Green Meter
 
 Winner of the "Best of Air Challenge" category @ HackKurius. One of 6 winners at the hackathon out of 84 participants.
-hi hi hi hi hi hi
+hi hi hi hi hi hi hi
 hi hi hi
 
 ## Inspiration
