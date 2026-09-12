@@ -1,10 +1,6 @@
-<div align="center">
-
 # Green Meter
 
-### Make the internet’s invisible footprint visible.
-
-**🏆 HackKurius Winner — Best of Air Challenge**
+### 🏆 HackKurius Winner — Best of Air Challenge
 
 [![Tests](https://img.shields.io/badge/tests-17_passing-234b3a?style=flat-square)](tests)
 ![React](https://img.shields.io/badge/React-19-234b3a?style=flat-square)
@@ -13,8 +9,6 @@
 [![License](https://img.shields.io/badge/License-GPLv3-234b3a?style=flat-square)](LICENSE)
 
 [Get started](#get-started) · [Architecture](docs/architecture.md) · [Methodology](docs/methodology.md) · [Privacy](docs/privacy.md)
-
-</div>
 
 Green Meter is a browser extension that turns observed network traffic into a clear, explorable carbon estimate. See which domains account for your data transfer, adjust the energy assumptions behind the numbers, and connect regional grid-intensity data without sending your browsing history to a server.
 
