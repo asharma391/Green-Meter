@@ -1,27 +1,116 @@
+<div align="center">
+
 # Green Meter
 
-Winner of the "Best of Air Challenge" category @ HackKurius. One of 6 winners at the hackathon out of 84 participants.
+### Make the internet’s invisible footprint visible.
 
-## Inspiration
+**🏆 HackKurius Winner — Best of Air Challenge**
 
-In the era of data-driven technology, the invisible environmental cost of online activities is escalating due to the significant energy consumption of data centers. Our digital activities, despite their common consideration as having a minimal environmental impact, actually contribute significantly to our carbon footprint. From the emissions needed to produce the electricity that powers data centers to the energy needed for data servers to transmit data across the globe, this is an important, yet widely unknown problem. Recognizing the gap in tools that measure digital carbon emissions comprehensively, our browser extension was created to illuminate the carbon footprint of users' entire web browsing sessions, not just individual websites. I created Green Meter to empower users to make more eco-conscious decisions and reduce this critical footprint.
+[![Tests](https://img.shields.io/badge/tests-17_passing-234b3a?style=flat-square)](tests)
+![React](https://img.shields.io/badge/React-19-234b3a?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-234b3a?style=flat-square)
+![Manifest V3](https://img.shields.io/badge/Chrome-Manifest_V3-234b3a?style=flat-square)
+[![License](https://img.shields.io/badge/License-GPLv3-234b3a?style=flat-square)](LICENSE)
+
+[Get started](#get-started) · [Architecture](docs/architecture.md) · [Methodology](docs/methodology.md) · [Privacy](docs/privacy.md)
+
+</div>
+
+Green Meter is a browser extension that turns observed network traffic into a clear, explorable carbon estimate. See which domains account for your data transfer, adjust the energy assumptions behind the numbers, and connect regional grid-intensity data without sending your browsing history to a server.
+
+<p align="center"><img src="docs/images/dashboard.png" width="480" alt="Green Meter dashboard showing a labeled synthetic-data preview, carbon estimate, and per-domain contributions" /></p>
 
 ## What it does
 
-Addressing two key questions—how to raise individual awareness and educate on carbon intensity—this tool calculates and displays CO2 equivalent emissions in real-time. Green Meter is one of the sole applications specialized for tracking and visualizing the carbon emissions involved in strictly online activities. It provides real-time data on the energy consumption and carbon footprint of web browsing sessions. The app equates digital emissions to relatable metrics for the user, like the number of trees needed to offset the carbon released, and a simplified visual representation, to create a tangible connection between users' online behaviour and its environmental impact. Our extension also guides users towards eco-friendlier online habits, promoting sustainable digital choices. Designed for ease of use, its accessibility ensures that anyone can install and utilize it with minimal effort, thus democratizing the path to a greener digital footprint.
+- **Traffic → carbon context.** A Manifest V3 service worker aggregates measurable HTTP response sizes and attributes them to initiating domains.
+- **An explainable model.** Every estimate comes from visible, configurable energy and carbon-intensity factors. Missing measurements are counted explicitly.
+- **A focused React dashboard.** Explore domain contributions, pause collection, reset a session, or export observations as JSON.
+- **Optional grid intelligence.** A TypeScript / Express API connects to Electricity Maps with server-side credentials, validated responses, a bounded TTL cache, request coalescing, timeouts, and rate limiting.
+- **Local control.** Domain aggregates stay in Chrome’s local extension storage. No account, analytics, or background upload pipeline.
 
-## How we built it
+## Get started
 
-We developed Green Meter as a Chrome extension using JavaScript, HTML, and CSS. We integrated the ElectricityMaps API for real-time carbon intensity data based on the user's geographic country location and used the standard 0.81 kWh/GB energy-to-data ratio to calculate the electricity usage for data transfer. The extension updates dynamically to reflect the user's browsing session.
+Requires **Node.js 22.12+** and Chrome 120+ or a compatible Chromium browser.
 
-## Challenges we ran into
+```bash
+git clone https://github.com/asharma391/Green-Meter.git
+cd Green-Meter
+npm ci
+npm run build
+```
 
-Accurately tracking and converting the data transfer into carbon emissions was hard considering the variable carbon intensity of electricity in different regions. We had to integrate with API to based on country data get the right figures.
+Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select **`dist/`**. Pin Green Meter, browse a few pages, and open the popup. No API key is required for the configurable local estimation mode.
 
-## Accomplishments that we're proud of
+For a standalone interactive popup preview:
 
-I'm proud of creating an intuitive, educational, well-functional tool that increases awareness & provides actionable insights into reducing one's digital carbon footprint. I’m also proud about the accuracy of the data given the unconventional and undocumented nature of accurately converting digital activity to a CO2 emission equivalent and also through our successful despite challenges integration of the ElectricityMaps API to ensure utmost data accuracy.
+```bash
+npm run dev
+```
 
-## What we learned
+The preview uses labeled synthetic data. To test real traffic, load the built extension; the development server does not install it.
 
-So much. This was my first chrome extension and there were many bugs. API implementation was very hard but I definitely learned a lot in overcoming these challenges. What's next for Green Meter Simple but very powerful, the extension could be expanded to incorporate more comprehensive analysis and visualization of data to better represent the user’s total carbon imprint. Visual comparisons of time and emissions on different websites would enable users to make more conscious choices and avoid those websites with excessive carbon impact. A bar graph showing the carbon imprint of the user’s activities for each day in the week outside of that of just the current session could be beneficial. Cross-platform integration of phone and computer could also help better represent emission impact. Outside of semantics, future versions could let users set daily carbon emission limits and alert them upon reaching these. Currently, the plugin doesn't track data uploads due to their minimal internet traffic share which could certainly be something to fix in the future.
+### Optional Electricity Maps API
+
+```bash
+cp .env.example .env
+# Add your own ELECTRICITYMAPS_KEY to .env
+npm run build
+node --env-file=.env dist-api/index.js
+```
+
+In the popup, open **Estimation model → Connect a local grid-data API**, enter a supported zone such as `CA-ON`, and fetch a snapshot. Provider access depends on your token’s zone coverage. The token never enters the extension bundle. Only the zone is sent to the API.
+
+For a containerized API, run `docker compose up --build` with the same `.env`. The container runs as a non-root user and exposes the API only on the host’s loopback interface. See [deployment](docs/deployment.md).
+
+## Architecture
+
+```mermaid
+flowchart LR
+  N[Completed HTTP responses] --> W[MV3 service worker]
+  W --> Q[Serialized observation updates]
+  Q --> S[(Chrome local storage)]
+  S --> U[React dashboard]
+  U --> M[Typed carbon model]
+  U -->|Explicit zone lookup| A[Express API]
+  A --> C[TTL cache + request coalescing]
+  C --> E[Electricity Maps]
+```
+
+```text
+src/
+├── background/   # Traffic observation and serialized state updates
+├── core/         # Pure estimation, validation, aggregation, and types
+└── popup/        # React dashboard and extension/preview adapter
+server/          # Optional grid-intensity API
+public/          # Extension manifest and original icons
+scripts/         # Vite + esbuild packaging
+tests/           # Model, worker, and API regression tests
+docs/            # Architecture, methodology, privacy, and deployment
+```
+
+The core model is independent of Chrome and React. The worker owns state mutations; the popup subscribes to storage changes. The optional API has no browsing-data endpoint or database. [Read the design decisions →](docs/architecture.md)
+
+## Development
+
+| Command           | Purpose                                                                |
+| ----------------- | ---------------------------------------------------------------------- |
+| `npm run dev`     | Interactive dashboard preview                                          |
+| `npm run api:dev` | Optional API with watch mode; pass credentials through the environment |
+| `npm run build`   | Type-check and build the extension and API                             |
+| `npm test`        | Run regression tests                                                   |
+| `npm run check`   | Type-check, test, and production-build                                 |
+| `npm run format`  | Format source and documentation                                        |
+
+A ready-to-enable [GitHub Actions workflow](docs/ci.yml) checks formatting, types, tests, and the production build, then uploads the unpacked extension. To enable it, copy the template to `.github/workflows/ci.yml` using a GitHub credential with workflow permission. All checks have also been run locally.
+
+## How to read the numbers
+
+The model is `transferred GB × kWh/GB × g CO₂e/kWh`, using decimal GB. The initial **400 g CO₂e/kWh** is an illustrative assumption; **0.81 kWh/GB** retains the original hackathon’s energy coefficient. Neither is presented as a universal, current measurement. Change both in the model panel.
+
+Only successful, non-cached responses with usable `Content-Length` values contribute to measured bytes. Uploads, some streaming traffic, browser-internal requests, and missing headers are outside the estimate. Grid intensity is a selected scenario, not an inferred measurement of every remote server. Changing the model recalculates the entire session. [Methodology and limits →](docs/methodology.md)
+
+## Project roots
+
+Originally built for **HackKurius**, where Green Meter won the **Best of Air Challenge**. This edition modernizes the original extension with React, TypeScript, an explicit estimation model, and a tested API boundary. Original authorship and commit dates are retained; historical credentials and cached IP data have been removed.
+
+Contributions are welcome; start with [CONTRIBUTING.md](CONTRIBUTING.md). Licensed under [GPL-3.0](LICENSE).

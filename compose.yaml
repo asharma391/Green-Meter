@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    ports:
+      - '127.0.0.1:3000:3000'
+    environment:
+      ELECTRICITYMAPS_KEY: ${ELECTRICITYMAPS_KEY:-}
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]

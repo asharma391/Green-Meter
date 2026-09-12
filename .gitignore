@@ -1,1 +1,12 @@
-/.DS_Store
+node_modules/
+dist/
+dist-api/
+coverage/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+*.zip
+playwright-report/
+test-results/
